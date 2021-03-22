@@ -23,7 +23,7 @@ function createMap(earthquakeData) {
 
     //create the map object with options
     var map = L.map("map-id", {
-        center: [40.73, -74.0059],
+        center: [36.85, -75.9779],
         zoom: 3,
         layers: [lightmap, earthquakes]
     });
@@ -35,5 +35,5 @@ function createMap(earthquakeData) {
 }
 
 function createMarkers(response) {
-    
+
 }
