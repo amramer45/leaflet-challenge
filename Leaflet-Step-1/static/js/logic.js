@@ -59,5 +59,20 @@ function createMarkers(response) {
     var magnitudeMarkers = [];
 
     //Loop through the array
-    for (var index = 0)
+    for (var index = 0; index < earthquakeFeatures.length; index++) {
+        var features = earthquakeFeatures[index];
+
+        //For each earthquakeFeatures, create a marker and bind a pop up with the name
+        var earthquakeMarker = L.marker([features.lat, features.lon])
+            .bindPopup("<h3>" + features.name + "<h3><h3>Magnitude: " + features.capacity + "</h3>");
+
+        //Add the marker to the array
+        earthquakeMarkers.push(earthquakeMarker);
+    }
+
+    //Create a layer group made from the array, pass it into the createmap function
+    createMap(L.layerGroup(earthquakeMarkers));
 }
+
+//Perform an API call to the Earthquake API to get station information
+d3.json(queryURL, createMarkers);
