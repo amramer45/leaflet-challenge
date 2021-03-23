@@ -3,8 +3,15 @@ body {
   margin: 0;
 }
 
-#map,
+#map-id,
 body,
 html {
   height: 100%;
+}
+
+
+.legend {
+  width: 40px;
+  height: 18px;
+  float: left;
 }
