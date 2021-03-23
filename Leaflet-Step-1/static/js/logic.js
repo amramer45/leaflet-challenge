@@ -54,7 +54,7 @@ function createMap(earthquakeData) {
         function styleInfo(feature) {
             return {
                 opacity: 1,
-                fillOpacity: 1
+                fillOpacity: 1,
                 fillColor: getColor(feature.properties.mag),
                 color: "#000",
                 radius: getRadius(feature.properties.mag),
@@ -127,8 +127,8 @@ function createMap(earthquakeData) {
         //Loop
         for (var i = 0; i < grades.length; i++) {
             div.innerHTML +=
-                "<i style = 'background: " colors[i] + " '></i> " +
-                grades[i] + (grades[i + 1] ? "&ndash;" + grades[i + 1] + "<br>" : "+");
+            "<i style='background: " + colors[i] + "'></i> " +
+            grades[i] + (grades[i + 1] ? "&ndash;" + grades[i + 1] + "<br>" : "+");
         }
         return div;
     };
@@ -139,7 +139,7 @@ function createMap(earthquakeData) {
 
 function createMarkers(response) {
     //Pull the earthquakes property off of response.data
-    var earthquakeFeatures = response.data.earthquakeFeatures;
+    var earthquakeFeatures = response.features;
 
     //Initialize an array to hold the markers
     var earthquakeMarkers = [];
