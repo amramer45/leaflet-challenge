@@ -38,7 +38,7 @@ function createMap(earthquakes, magnitude) {
     };
 
     //create the map object with options
-    var map = L.map("map-id", {
+    var map = L.map("mapid", {
         center: [36.85, -75.9779],
         zoom: 3,
         layers: [lightmap, magnitude]
@@ -48,6 +48,26 @@ function createMap(earthquakes, magnitude) {
     L.control.layers(baseMaps, overlayMaps, {
         collapsed: false
     }).addTo(map);
+
+    var legend = L.control({ position: 'bottomright' });
+
+    legend.onAdd = function (map) {
+
+        var div = L.DomUtil.create('div', 'info legend'),
+            grades = [0, 11, 31, 51, 71, 91],
+            labels = ["-10-10 km", "10-30 km", "30-50 km", "30-50 km", "70-90 km", "90+ km"];
+
+        div.innerHTML = "<div> </div>"
+        // loop through our density intervals and generate a label with a colored square for each interval
+        for (var i = 0; i < grades.length; i++) {
+            div.innerHTML +=
+                '<i style="background:' + chooseColor(grades[i]) + '"></i>' + labels[i]+ '<br/>';
+        }
+
+        return div;
+};
+
+    legend.addTo(map);
 }
 
 d3.json(queryURL, function(data) {
@@ -99,26 +119,6 @@ d3.json(queryURL, function(data) {
             layer.bindPopup("Magnitude: " + feature.properties.mag + "<br>Location: " + feature.properties.place);
         }
     }).addTo(map);
-
-    //Create legend variable
-    var legend = L.control({
-            position: "bottomright"
-        });
-
-    // //details for the legend
-    legend.onAdd = function () {
-        var div = L.DomUtil.create("div", "legend");
-        var grades = [0, 1, 2, 3, 4, 5];
-        var colors = ["#2c99ea", "#2ceabf", "#92ea2c", "#d5ea2c","#eaa92c", "#ea2c2c"];
-
-        div.innerHTML = '<div><b>Earthquake Depth</b></div';
-
-        //Loop
-        for (var i = 0; i < grades.length; i++) {
-            div.innerHTML +='<i style="background:'+chooseColor(grades[i])+ '">&nbsp;</i>&nbsp;&nbsp;'+labels[i]+'<br/>';
-            }
-        return div;
-    }; legend.addTo(map);
 
     //Create a layer group made from the array, pass it into the createmap function
     createMap(L.layerGroup(earthquakeMarkers), L.layerGroup(magnitude));
