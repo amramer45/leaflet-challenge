@@ -1,6 +1,9 @@
 //query URL for past 7 days of earthquakes
 const queryURL = 'https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_week.geojson';
 
+//Tectonic URL 
+const tectonicUrl = 'https://raw.githubusercontent.com/fraxen/tectonicplates/master/GeoJSON/PB2002_boundaries.json'
+
 function createMap(earthquakes, magnitude) {
     //create tile layer that will be the background of our map
     var lightmap = L.tileLayer("https://api.mapbox.com/styles/v1/mapbox/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}", {
@@ -34,14 +37,15 @@ function createMap(earthquakes, magnitude) {
     //create an overlaymaps object to hold the earthquake layer
     var overlayMaps = {
         "Earthquakes": earthquakes,
-        "Magnitude": magnitude
+        "Magnitude": magnitude,
+        "Tectonic Plates": tectonicPlates
     };
 
     //create the map object with options
     var map = L.map("mapid", {
         center: [36.85, -75.9779],
         zoom: 3,
-        layers: [lightmap, magnitude]
+        layers: [lightmap, magnitude, tectonicPlates]
     });
 
     //create a layer control, pass in basemaps and overlaymaps
@@ -129,4 +133,16 @@ function createMarkers(response) {
     createMap(L.layerGroup(earthquakeMarkers), L.layerGroup(magnitude));
 };
 
+//Tectonic Plates
+var tectonicPlates = new L.LayerGroup();
+
+function createTectonicPlates(Data) {
+    L.geoJson(Data, {
+        color: "orange",
+        weight: 2
+    })
+    .addTo(tectonicPlates);
+};
+
 d3.json(queryURL, createMarkers);
+d3.json(tectonicUrl, createTectonicPlates);
